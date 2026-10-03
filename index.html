@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#c8321c"><title>Kitchen</title>
+<script src="config.js" onerror="void 0"></script>
+<link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700&family=Playfair+Display+SC:wght@700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{--primary:#c8321c;--secondary:#f4a259;--background:#faf6f3;--surface:#fff;--text:#2a1f1b;--muted:#6b5f5a;--border:#eadfd9;--success:#1f7a45;--warning:#946200;--danger:#b42318;--radius:16px;--shadow:0 2px 12px #2a1f1b14}
+*{box-sizing:border-box}html,body{overflow-x:hidden}body{margin:0;font:16px/1.45 Karla,system-ui,sans-serif;background:var(--background);color:var(--text)}
+h1,h2,h3{font-family:'Playfair Display SC',Georgia,serif;margin:0}svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+button{font:inherit;border:0;border-radius:12px;padding:11px 16px;min-height:44px;background:var(--primary);color:#fff;font-weight:700;cursor:pointer;transition:transform .1s,opacity .2s}button:active{transform:scale(.97)}button:disabled{opacity:.45;cursor:not-allowed}
+button.g{background:var(--surface);color:var(--primary);border:1px solid var(--primary)}button.ic{background:none;color:var(--text);padding:0;width:44px;border-radius:50%}
+:focus-visible{outline:3px solid #2b6cb0;outline-offset:2px}
+input,textarea,select{width:100%;padding:12px;border:1px solid var(--border);border-radius:12px;font:inherit;margin:4px 0 10px;background:#fff;color:var(--text)}label{font-size:13px;color:var(--muted);font-weight:600}
+header{position:sticky;top:0;z-index:8;background:var(--surface);box-shadow:var(--shadow);display:flex;align-items:center;gap:10px;padding:8px 12px}
+.brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0;cursor:pointer}.brand img{width:42px;height:42px;border-radius:50%;object-fit:cover;background:var(--border)}.brand h1{font-size:18px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand small{color:var(--muted);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sr{display:none;padding:8px 12px 0}#sr.open{display:block}#sr input{margin:0}
+#resume{display:none;margin:10px 12px 0;background:#fff6e5;border-radius:12px;padding:10px;font-size:14px;align-items:center;gap:8px;justify-content:space-between}
+.wrap{max-width:1100px;margin:auto}
+.cz{position:relative;margin:12px;border-radius:var(--radius);overflow:hidden;height:220px;background:linear-gradient(135deg,var(--primary),var(--secondary));touch-action:pan-y}
+.sl{position:absolute;inset:0;opacity:0;pointer-events:none;color:#fff;padding:16px 16px 70px}.sl.on{opacity:1;pointer-events:auto}.sl.fd{transition:opacity .7s}
+.sl .bg{position:absolute;inset:0;background:center/cover;box-shadow:inset 0 -110px 70px -40px #000a}.sl.zm.on .bg{animation:kb 7s ease-out forwards}@keyframes kb{to{transform:scale(1.12)}}
+.sl .t{position:relative}.sl h2{font-size:22px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:56px}.sl p{margin:2px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:44px;font-size:14px}
+.sl .pz{position:relative;font-weight:700;min-height:22px}.sl .cta{position:absolute;left:16px;bottom:16px;background:#fff;color:var(--primary)}.sl.tx.on .t>*{animation:up .6s both}@keyframes up{from{opacity:0;transform:translateY(12px)}}
+.cz .nv{position:absolute;top:50%;transform:translateY(-50%);z-index:3;background:#0005;color:#fff;width:36px;min-height:36px;padding:0;border-radius:50%}.nv.l{left:6px}.nv.r{right:6px}
+#dots{position:absolute;right:14px;bottom:22px;display:flex;gap:6px;z-index:3}#dots button{width:10px;min-height:10px;height:10px;padding:0;border-radius:50%;background:#fff6}#dots button.on{background:#fff}
+.chips{display:flex;gap:8px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding:4px 12px 10px;scroll-snap-type:x proximity}.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;scroll-snap-align:start;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:24px;padding:8px 16px;min-height:40px}.chip.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+.tb{display:flex;justify-content:space-between;align-items:center;padding:0 12px}.tb h2{font-size:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;padding:12px}
+.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .2s}.card:hover{box-shadow:0 6px 20px #2a1f1b22}
+.im{aspect-ratio:4/3;background:var(--border) center/cover;position:relative}.bd{position:absolute;top:8px;left:8px;background:var(--primary);color:#fff;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px}
+.bd.na{background:#333;left:auto;right:8px}.cb{padding:12px}.cb h3{font-size:17px}.cb p{margin:4px 0 8px;color:var(--muted);font-size:14px}
+.pr b{font-size:20px}.pr s{color:var(--muted);margin-right:6px}.act{display:flex;gap:8px;align-items:center;margin-top:10px}.act .ob{flex:1}
+.qt{display:flex;align-items:center;border:1px solid var(--border);border-radius:12px}.qt button{background:none;color:var(--primary);width:40px;padding:0;font-size:20px}.qt output{min-width:26px;text-align:center;font-weight:700}
+.card.na .im{filter:grayscale(1);opacity:.55}.card.na .cb{opacity:.7}
+.list .grid{grid-template-columns:1fr}.list .card{display:flex}.list .im{width:120px;aspect-ratio:1;flex:none}.list .cb{flex:1;min-width:0}.list .cb p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sk{height:220px;border-radius:var(--radius);background:linear-gradient(90deg,#eee,#f8f8f8,#eee);background-size:200%;animation:s 1.2s infinite}@keyframes s{to{background-position:-200%}}
+.empty{text-align:center;color:var(--muted);padding:40px 12px}
+.pg{display:none;padding:12px}.pg.on{display:block}.box{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:12px}
+#dwr{position:fixed;top:0;bottom:0;right:0;width:280px;max-width:86vw;background:var(--surface);z-index:12;transform:translateX(100%);transition:transform .2s;padding:14px 10px;box-shadow:var(--shadow);overflow:auto}#dwr.open{transform:none}
+#dwr button.nb{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:none;color:var(--text);border-radius:12px;padding:12px;font-weight:600}#dwr button.nb:hover{background:#c8321c14}
+#ovl{position:fixed;inset:0;background:#0006;z-index:11;display:none}#ovl.open{display:block}
+.sheet{position:fixed;inset:0;background:#0008;display:none;align-items:flex-end;justify-content:center;z-index:20}.sheet.open{display:flex}.sheet>div{background:var(--surface);width:100%;max-width:520px;max-height:94vh;overflow:auto;border-radius:22px 22px 0 0;padding:18px;animation:up .25s}
+.center{text-align:center}.amt{font-size:32px;font-weight:700;color:var(--primary);margin:4px 0}.note{background:#fff6e5;border-radius:12px;padding:10px;font-size:14px;text-align:left}
+.sum{background:var(--background);border-radius:14px;padding:12px;margin:8px 0;text-align:left}.sum div{display:flex;justify-content:space-between;padding:2px 0}.sum .tot{border-top:1px dashed var(--border);margin-top:6px;padding-top:8px;font-size:20px;font-weight:700;color:var(--primary)}
+#qr,#tqr{display:inline-block;padding:10px;background:#fff;border:1px solid var(--border);border-radius:14px}.row{display:flex;gap:8px}.row>*{flex:1}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:24px;display:none;z-index:40;max-width:90vw}
+ol.tl{list-style:none;padding:0}ol.tl li{padding:8px 0 8px 34px;position:relative;color:var(--muted)}ol.tl li:before{content:"";position:absolute;left:6px;top:11px;width:14px;height:14px;border-radius:50%;background:var(--border)}ol.tl li.done{color:var(--text)}ol.tl li.done:before{background:var(--success)}ol.tl li.now{font-weight:700;color:var(--primary)}ol.tl li.now:before{background:var(--primary);box-shadow:0 0 0 4px #c8321c33}
+@media(min-width:768px){.cz{height:300px}.sl h2{font-size:30px}.grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}.sheet{align-items:center}.sheet>div{border-radius:22px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.closed{display:none;margin:12px;background:#fde8e8;border:1px solid #f3b4b4;border-radius:var(--radius);padding:14px;text-align:center}.closed h3{font-family:Karla,sans-serif}.closed p{margin:4px 0}
+.dn{margin:0 12px 8px;color:var(--muted);font-size:14px}.dn a{color:var(--primary);font-weight:700}
+.ft{background:#2a1f1b;color:#fff;padding:22px 16px;margin-top:24px;text-align:center}.ft details{margin:10px 0}.ft summary{cursor:pointer;font-weight:700}.ft a{color:#f4a259}.ft small{color:#cbbfb9}
+.ft .fcol{margin:14px 0}.ft .fcol b{display:block;margin-bottom:2px}
+.im[data-d]{cursor:pointer}.gd{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:5px}.gd i{width:7px;height:7px;border-radius:50%;background:#fff8}.gd i.on{background:#fff}
+#revs{margin:18px 0 6px}.rv{position:relative;margin:8px 12px;min-height:170px}.rc{position:absolute;inset:0;margin:0;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 44px;text-align:center;opacity:0;pointer-events:none;transition:opacity .5s;overflow:hidden}.rc.on{opacity:1;pointer-events:auto}
+.rc blockquote{margin:6px 0;font-size:15px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}.rc figcaption{color:var(--muted);font-weight:700}.st{color:#e8a200;letter-spacing:2px;font-size:18px}.rav{width:44px;height:44px;border-radius:50%;object-fit:cover}
+.rv .nv{position:absolute;top:50%;transform:translateY(-50%);z-index:3;background:#0004;color:#fff;width:34px;min-height:34px;padding:0;border-radius:50%}.rv .nv.l{left:6px}.rv .nv.r{right:6px}
+.fss{font-size:13px;color:var(--muted);margin:4px 0}
+</style></head><body>
+<header><div class="brand" id="brand" role="link" tabindex="0"><img id="logo" alt="Kitchen logo" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="><div style="min-width:0"><h1 id="kname">Kitchen</h1><small id="tag"></small></div></div>
+<button class="ic" id="sbtn" aria-label="Search"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+<button class="ic" id="hbtn" aria-label="Open menu"><svg class="i" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button></header>
+<div id="sr"><input id="q" type="search" placeholder="Search dishes" aria-label="Search dishes"></div>
+<div id="resume"><span>You have an order waiting for payment.</span><button onclick="resume()" style="min-height:36px;padding:6px 12px">Resume</button></div>
+
+<div class="wrap">
+<section id="home" class="pg on" style="padding:0">
+ <div class="closed" id="closed" role="alert"></div>
+ <div class="cz" id="cz" aria-roledescription="carousel" aria-label="Offers"></div>
+ <div class="chips" id="chips" role="tablist" aria-label="Categories"></div>
+ <p class="dn" id="dnote"></p>
+ <div class="tb"><h2 id="mt">Menu</h2><div class="row"><button class="g" id="vg" aria-pressed="true" style="min-height:38px;padding:6px 12px">Grid</button><button class="g" id="vl" aria-pressed="false" style="min-height:38px;padding:6px 12px">List</button></div></div>
+ <main id="main"><div class="grid"><div class="sk"></div><div class="sk"></div></div></main>
+ <section id="revs" style="display:none" aria-label="Customer reviews"><div class="tb"><h2 id="revt"></h2></div><div class="rv" id="rv"></div></section>
+</section>
+<section id="trackv" class="pg"><div class="box"><h2>Track My Order</h2><br><label for="to">Order ID</label><input id="to" placeholder="KIT-20260930-001" autocapitalize="characters"><label for="tm">Mobile number</label><input id="tm" type="tel" inputmode="numeric"><button id="tgo" style="width:100%">Check status</button><p id="terr" role="alert" style="color:var(--danger)"></p></div><div id="tout"></div></section>
+<section id="aboutv" class="pg"><div class="box center"><img id="alogo" alt="" width="72" height="72" style="border-radius:50%"><h2 id="aname"></h2></div><div class="box"><h3>About Us</h3><p id="atext" style="white-space:pre-wrap"></p></div><div class="box" id="alegal" style="display:none"><h3>Legal Information</h3><p id="afs"></p></div><div class="box"><h3>Delivery Area</h3><p id="aarea" style="white-space:pre-wrap"></p><h3>Opening Hours</h3><p id="ahrs"></p><h3>Contact</h3><p id="acon" style="white-space:pre-wrap"></p><button onclick="wa()">Chat on WhatsApp</button></div></section>
+<section id="faqv" class="pg"><h2 style="padding:0 4px 10px">Frequently Asked Questions</h2><div id="faqb"></div></section>
+<section id="termsv" class="pg"><div class="box"><h2>Terms &amp; Conditions</h2><p id="ttext" style="white-space:pre-wrap"></p></div></section>
+<section id="privv" class="pg"><div class="box"><h2>Privacy Policy</h2><p id="ptext" style="white-space:pre-wrap"></p><h3>Information we collect</h3><ul><li>Name</li><li>Mobile and WhatsApp number</li><li>Delivery address</li><li>Order details</li><li>Payment receipt / UPI reference</li><li>Location (GPS) — only when delivery check is required</li></ul><p id="ploc"></p><p>We use this only to prepare, deliver and verify your order and to contact you about it.</p></div></section>
+</div>
+<footer class="ft"><b id="fkn"></b><br><small>Fresh Food • Local Delivery</small><p id="fdel" style="margin:8px 0"></p><button class="g" onclick="areasModal()" style="min-height:38px;padding:6px 12px">View Delivery Areas</button>
+<div class="fcol"><b>Contact Us</b><p id="fcon" style="margin:4px 0"></p><button onclick="wa()" style="min-height:38px;padding:6px 12px">WhatsApp</button></div>
+<div class="fcol"><b>Legal &amp; Help</b><p style="margin:4px 0"><a href="#" onclick="setView('aboutv');return false">About Us</a> · <a href="#" onclick="setView('faqv');return false">FAQ</a> · <a href="#" onclick="setView('privv');return false">Privacy Policy</a> · <a href="#" onclick="setView('termsv');return false">Terms &amp; Conditions</a></p></div>
+<p id="ffs" class="fss" style="color:#cbbfb9"></p><small id="fcp"></small></footer>
+<div id="ovl"></div>
+<aside id="dwr" aria-label="Menu"><button class="ic" id="dcl" aria-label="Close menu" style="margin-left:auto;display:block"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+<button class="nb" data-v="home"><svg class="i" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10H3z"/></svg>Home</button>
+<button class="nb" data-v="menu"><svg class="i" viewBox="0 0 24 24"><path d="M4 3v7a3 3 0 0 0 6 0V3M7 3v18M17 3c-2 2-3 5-3 8h3v10"/></svg>Menu / Dishes</button>
+<button class="nb" data-v="offers"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4"/><path d="M12 8v13M5 12v9h14v-9M12 8c-2-4-6-3-5 0M12 8c2-4 6-3 5 0"/></svg>Offers</button>
+<button class="nb" data-v="trackv"><svg class="i" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4zM3 7l9 4 9-4M12 11v10"/></svg>Track My Order</button>
+<button class="nb" data-v="areas"><svg class="i" viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Delivery Areas</button>
+<button class="nb" data-v="faqv"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17v.5"/></svg>FAQ</button>
+<button class="nb" data-v="aboutv"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>About Us</button>
+<button class="nb" data-v="termsv"><svg class="i" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h7"/></svg>Terms &amp; Conditions</button>
+<button class="nb" data-v="privv"><svg class="i" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Privacy Policy</button>
+<button class="nb" data-v="wa"><svg class="i" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>Contact / WhatsApp</button></aside>
+<div id="toast" role="status"></div>
+
+<div class="sheet" id="dSheet" role="dialog" aria-modal="true" aria-label="Delivery areas"><div><h2>Delivery Areas</h2><br><div id="dBody"></div><br><button class="g" style="width:100%" onclick="closeSheets()">Close</button></div></div>
+<div class="sheet" id="fSheet" role="dialog" aria-modal="true" aria-labelledby="fTitle"><div>
+<h2 id="fTitle">Your details</h2>
+<div class="sum"><div><span id="fItem"></span><span class="qt"><button id="fm1" aria-label="Decrease quantity">−</button><output id="fq" aria-live="polite">1</output><button id="fp1" aria-label="Increase quantity">+</button></span></div></div><br>
+<label for="fn">Full Name *</label><input id="fn" autocomplete="name">
+<label for="fm">Mobile *</label><input id="fm" type="tel" inputmode="numeric" autocomplete="tel">
+<label for="fw">WhatsApp Number *</label><input id="fw" type="tel" inputmode="numeric">
+<label for="fc">Delivery City</label><input id="fc" readonly>
+<label for="fas">Delivery Area *</label><select id="fas"></select><input id="far" list="arl" placeholder="Your area" style="display:none"><datalist id="arl"></datalist>
+<label for="fa">Full Delivery Address *</label><textarea id="fa" rows="2"></textarea>
+<label for="fl">Landmark</label><input id="fl">
+<label for="fno">Delivery note / special instructions</label><textarea id="fno" rows="2"></textarea>
+<p class="note" id="gnote"></p><div id="gmsg" role="alert"></div>
+<div class="sum" id="fsum"></div><p class="note" id="fdelnote"></p>
+<div class="row" style="margin-top:10px"><button class="g" onclick="closeSheets()">Cancel</button><button id="fgo">Continue to Payment</button></div></div></div>
+
+<div class="sheet" id="pSheet" role="dialog" aria-modal="true" aria-label="Payment"><div class="center">
+<img id="plogo" alt="" width="48" height="48" style="border-radius:50%"><h3 id="pk"></h3>
+<div id="pInfo"></div><div class="sum" id="pSum"></div><p class="fss" id="pFssai"></p>
+<div id="wait" class="note" style="display:none"><span id="waitt"></span><br><button id="wref" style="margin-top:8px">Check again</button></div>
+<div id="expired" class="note" style="display:none"><b>Payment session expired</b><br>For safety this QR has expired.<div class="row" style="margin-top:8px"><button id="renew">Get new QR</button><button class="g" id="alpaid">I already paid</button></div></div>
+<div id="qrbox"><div class="amt" id="pAmt"></div><div id="qr"></div><p>Scan using any UPI app<br><b id="pUpi"></b></p><p class="fss" id="pExp"></p>
+<div class="row"><button class="g" id="dlc">Download Payment Card</button><button class="g" id="upiApp">Open UPI App</button></div>
+<p class="note" style="margin-top:10px">After payment, come back to this page. Your order details will remain here.</p></div>
+<div id="proof" style="display:none;text-align:left"><hr>
+<h3>Upload payment proof</h3><br>
+<label for="rf">Receipt screenshot (JPG, PNG, WEBP or PDF)</label><input id="rf" type="file" accept="image/jpeg,image/png,image/webp,application/pdf">
+<label for="tx">UPI transaction / reference number</label><input id="tx">
+<button id="sub" style="width:100%">Confirm Payment</button>
+<p class="note" style="margin-top:10px">Payment is verified manually. Your order will be confirmed after we verify your payment.</p></div>
+<button id="paid" style="width:100%;margin-top:10px">I Have Paid</button>
+<button class="g" style="width:100%;margin-top:8px" onclick="closeSheets()">Close (order stays saved)</button></div></div>
+
+<div class="sheet" id="sSheet" role="dialog" aria-modal="true" aria-label="Order received"><div class="center"><h2>Order Received</h2><p>Order ID</p><h1 id="sid" style="margin:0"></h1>
+<p>Payment proof received — verification pending.<br>Your order will be confirmed after verification.</p><p class="note">Please save your Order ID.</p><br>
+<div class="row"><button onclick="wa()">WhatsApp Us</button><button class="g" id="strk">Track Order</button></div><button class="g" style="width:100%;margin-top:8px" onclick="closeSheets()">Done</button></div></div>
+
+<script>
+var S={},X={},dishes=[],offersL=[],cat='All',view=localStorage.getItem('kview')||'grid',cur=null,dish=null,fq=1,Q={},KEY='kitchen_session',$=function(i){return document.getElementById(i)};
+function esc(t){var d=document.createElement('div');d.textContent=t==null?'':t;return d.innerHTML}
+function toast(m){var t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(t._h);t._h=setTimeout(function(){t.style.display='none'},3500)}
+function api(fn,args){
+  if(window.KITCHEN_API)return fetch(window.KITCHEN_API,{method:'POST',body:JSON.stringify({fn:fn,args:args})}).then(function(r){return r.json()}).catch(function(){return {success:false,message:'Network problem. Please check your internet and try again.'}});
+  return new Promise(function(res){google.script.run.withSuccessHandler(res).withFailureHandler(function(){res({success:false,message:'Something went wrong. Please try again.'})})[fn].apply(null,args)})}
+function money(n){return (S.Currency||'₹')+n}function save(){localStorage.setItem(KEY,JSON.stringify(cur))}
+function maxQ(){return +S['Max Quantity']||20}
+function closeSheets(){document.querySelectorAll('.sheet').forEach(function(s){s.classList.remove('open')})}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeSheets();dwr(false)}});
+
+/* ---------- navigation ---------- */
+function dwr(o){$('dwr').classList.toggle('open',o);$('ovl').classList.toggle('open',o)}
+$('hbtn').onclick=function(){dwr(true)};$('dcl').onclick=$('ovl').onclick=function(){dwr(false)};
+$('sbtn').onclick=function(){var s=$('sr');s.classList.toggle('open');if(s.classList.contains('open')){setView('home');$('q').focus()}};
+$('brand').onclick=function(){setView('home')};
+function setView(v){document.querySelectorAll('.pg').forEach(function(p){p.classList.toggle('on',p.id===v)});window.scrollTo(0,0);
+  if(v==='aboutv'){$('alogo').src=$('logo').src;$('aname').textContent=S['Kitchen Name']||'';$('atext').textContent=S['About Us']||'';$('aarea').textContent=(X.city?'Delivery within '+X.city+' City and selected areas.\n':'')+(S['Delivery Info']||S['Delivery Area']||'')+(X.areas&&X.areas.length?'\nAreas: '+X.areas.join(', '):'');$('ahrs').textContent=S['Opening Hours']||'';$('acon').textContent=S['Contact Info']||('WhatsApp: '+(S['WhatsApp Number']||''));$('alegal').style.display=X.fssai?'block':'none';$('afs').textContent=X.fssai?'FSSAI Lic. No.: '+X.fssai:''}
+  if(v==='termsv')$('ttext').textContent=S['Terms and Conditions']||'';if(v==='privv'){$('ptext').textContent=S['Privacy Policy']||'';$('ploc').textContent='Location (GPS) is read only once, when you place an order, to check whether delivery is available in your area. It is not used to fill in your address. Order location data is kept for up to '+(S['Location Retention Days']||'30')+' days and then removed.'}}
+document.querySelectorAll('#dwr [data-v]').forEach(function(b){b.onclick=function(){var v=b.dataset.v;dwr(false);
+  if(v==='wa')return wa();if(v==='areas')return areasModal();if(v==='menu'||v==='offers'){setView('home');pickCat(v==='offers'?'Offers':'All');$('main').scrollIntoView({behavior:'smooth'});return}setView(v)}});
+function wa(t){window.open('https://wa.me/'+String(S['WhatsApp Number']||'').replace(/\D/g,'')+(t?'?text='+encodeURIComponent(t):''),'_blank','noopener')}
+
+/* ---------- load ---------- */
+api('getPublicData',[]).then(function(r){
+  if(!r.success){$('main').innerHTML='<div class="empty">'+esc(r.message)+'</div>';return}
+  S=r.data.settings;X=r.data.extras||{};dishes=r.data.dishes;offersL=r.data.offers||[];
+  $('kname').textContent=S['Kitchen Name'];document.title=S['Kitchen Name'];$('tag').textContent=S['Tagline']||'';
+  if(S['Logo URL']){$('logo').src=S['Logo URL'];$('plogo').src=S['Logo URL']}
+  if(S['Primary Color'])document.documentElement.style.setProperty('--primary',S['Primary Color']);
+  buildChips();buildCarousel(slidesFrom(r.data.banners));applyExtras();render();checkResume();
+  var qp=new URLSearchParams(location.search);if(qp.get('id')){$('to').value=qp.get('id');setView('trackv')}});
+function isClosed(){return X.kitchen&&X.kitchen.open===false}
+function applyExtras(){var k=X.kitchen||{open:true},cb=$('closed');
+  if(!k.open){cb.style.display='block';cb.innerHTML='<h3>🔴 Kitchen is Currently Closed</h3><p>We\'re not accepting new orders right now.</p>'+(k.hoursToday?'<p>Today\'s ordering hours: '+esc(k.hoursToday)+'</p>':'')+(k.nextOpen?'<p><b>Next opening: '+esc(k.nextOpen)+'</b></p>':'')+'<p>Please come back during our opening hours.</p>'}else cb.style.display='none';
+  var city=X.city||'';$('dnote').innerHTML='🚚 We currently deliver within '+(city?esc(city)+' City and selected areas':'selected areas')+'. <a href="#" id="vda">Check available delivery areas</a> before placing your order.';$('vda').onclick=function(e){e.preventDefault();areasModal()};
+  $('fc').value=city;var as=$('fas'),ar=X.areas||[];
+  if(ar.length&&X.areaValidation){as.style.display='';$('far').style.display='none';as.innerHTML='<option value="">Select area</option>'+ar.map(function(a){return '<option>'+esc(a)+'</option>'}).join('')}
+  else{as.style.display='none';$('far').style.display='';$('arl').innerHTML=ar.map(function(a){return '<option value="'+esc(a)+'">'}).join('')}
+  $('fkn').textContent=S['Kitchen Name']||'';$('fdel').textContent='🚚 Delivery Available In: '+(city?city+' City & Selected Areas':'Selected Areas');
+  $('fcon').textContent=S['Contact Number']||S['WhatsApp Number']||'';$('ffs').textContent=X.fssai?'FSSAI Lic. No.: '+X.fssai:'';$('ffs').style.display=X.fssai?'block':'none';$('fcp').textContent='© '+new Date().getFullYear()+' '+(S['Kitchen Name']||'');buildReviews(X.reviews);buildFaq(X.faqs);applySeo(X.seo)}
+var ri=0,rtm=null;
+function buildReviews(l){var sec=$('revs');if(!l||!l.length||String(S['Show Reviews']).toUpperCase()==='FALSE'){sec.style.display='none';return}sec.style.display='block';$('revt').textContent=S['Review Section Title']||'What our customers say';
+  $('rv').innerHTML=l.map(function(x,i){var n=Math.max(1,Math.min(5,Math.round(Number(x.rating)||5)));return '<figure class="rc'+(i?'':' on')+'" role="group" aria-label="Review '+(i+1)+' of '+l.length+'">'+(x.image?'<img class="rav" alt="" src="'+esc(x.image)+'">':'')+'<div class="st" role="img" aria-label="'+n+' out of 5 stars">'+'★'.repeat(n)+'☆'.repeat(5-n)+'</div><blockquote>'+esc(x.text)+'</blockquote><figcaption>— '+esc(x.name)+'</figcaption></figure>'}).join('')+
+  (l.length>1?'<button class="nv l" aria-label="Previous review" data-r="-1">‹</button><button class="nv r" aria-label="Next review" data-r="1">›</button>':'');
+  $('rv').onclick=function(e){var r=e.target.getAttribute('data-r');if(r){rshow(ri+ +r);clearInterval(rtm)}};
+  var sx=0;$('rv').ontouchstart=function(e){sx=e.touches[0].clientX;clearInterval(rtm)};$('rv').ontouchend=function(e){var d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>40)rshow(ri+(d<0?1:-1))};
+  clearInterval(rtm);if(l.length>1)rtm=setInterval(function(){rshow(ri+1)},6000)}
+function rshow(i){var s=document.querySelectorAll('.rc');if(!s.length)return;ri=(i+s.length)%s.length;[].forEach.call(s,function(e,k){e.classList.toggle('on',k===ri)})}
+function buildFaq(l){$('faqb').innerHTML=l&&l.length?l.map(function(f){return '<details class="box"><summary><b>'+esc(f.q)+'</b></summary><p style="white-space:pre-wrap;margin-bottom:0">'+esc(f.a)+'</p></details>'}).join(''):'<div class="empty">No FAQs yet.</div>'}
+function applySeo(s){if(!s)return;if(s.title)document.title=s.title;
+  var set=function(sel,attr,val,tag,at){if(!val)return;var e=document.querySelector(sel);if(!e){e=document.createElement(tag);for(var k in at)e.setAttribute(k,at[k]);document.head.appendChild(e)}e.setAttribute(attr,val)};
+  set('meta[name="description"]','content',s.description,'meta',{name:'description'});set('meta[name="keywords"]','content',s.keywords,'meta',{name:'keywords'});
+  set('meta[property="og:title"]','content',s.title,'meta',{property:'og:title'});set('meta[property="og:description"]','content',s.description,'meta',{property:'og:description'});set('meta[property="og:image"]','content',s.ogImage,'meta',{property:'og:image'});
+  set('link[rel="canonical"]','href',s.canonical?s.canonical+'/':'','link',{rel:'canonical'});set('link[rel="icon"]','href',s.favicon,'link',{rel:'icon'});
+  if(s.geo){set('meta[name="geo.region"]','content','IN','meta',{name:'geo.region'});set('meta[name="geo.placename"]','content',s.geo.place,'meta',{name:'geo.placename'});set('meta[name="geo.position"]','content',s.geo.lat+';'+s.geo.lng,'meta',{name:'geo.position'})}
+  document.querySelectorAll('script[data-seo]').forEach(function(e){e.remove()});(s.jsonld||[]).forEach(function(o){var t=document.createElement('script');t.type='application/ld+json';t.setAttribute('data-seo','1');t.textContent=JSON.stringify(o);document.head.appendChild(t)})}
+function areasModal(){var ar=X.areas||[];$('dBody').innerHTML='<p><b>'+esc(X.city||'')+'</b></p>'+(ar.length?'<ul>'+ar.map(function(a){return '<li>'+esc(a)+'</li>'}).join('')+'</ul>':'<p>Please ask us on WhatsApp whether we deliver to your area.</p>')+(S['Delivery Info']?'<p class="note">'+esc(S['Delivery Info'])+'</p>':'');$('dSheet').classList.add('open')}
+function slidesFrom(b){var o=offersL.map(function(x){return {image:x.image,title:x.title,subtitle:x.subtitle,price:x.price?money(x.price):x.discount,cta:'Order Now',link:x.link,auto:true,fade:true,zoom:false,text:false}});
+  return o.concat(b.map(function(x){return {image:x.image,title:x.title,subtitle:x.subtitle,price:'',cta:x.cta,link:x.link,auto:x.auto,fade:x.fade,zoom:x.zoom,text:x.text}}))}
+function buildChips(){var c=['All'].concat(dishes.map(function(d){return d.category}).filter(function(v,i,a){return v&&a.indexOf(v)===i}));if(dishes.some(function(d){return d.hasOffer}))c.push('Offers');
+  $('chips').innerHTML=c.map(function(x){return '<button class="chip'+(x===cat?' on':'')+'" role="tab" aria-selected="'+(x===cat)+'" data-c="'+esc(x)+'">'+esc(x)+'</button>'}).join('');
+  $('chips').onclick=function(e){var c=e.target.getAttribute('data-c');if(c)pickCat(c)}}
+function pickCat(c){cat=c;buildChips();render()}
+
+/* ---------- carousel ---------- */
+var bi=0,bt=null,bs=[];
+function go(l){l=(l||'').trim();if(!l)return;
+  if(/^https?:\/\//i.test(l)){window.open(l,'_blank','noopener');return}
+  if(l.indexOf('dish:')===0){var d=dishes.filter(function(x){return x.id===l.slice(5)})[0];if(!d||!d.available)return toast('Currently unavailable');return openForm(d.id)}
+  if(l.indexOf('cat:')===0){setView('home');pickCat(l.slice(4));return $('main').scrollIntoView({behavior:'smooth'})}
+  if(l==='track')return setView('trackv');if(l==='combos'){setView('home');pickCat('Combos')}
+  $('main').scrollIntoView({behavior:'smooth'})}
+function buildCarousel(b){bs=b;var z=$('cz');if(!b.length){z.style.display='none';return}
+  z.innerHTML=b.map(function(x,i){return '<div class="sl'+(x.fade?' fd':'')+(x.zoom?' zm':'')+(x.text?' tx':'')+(i?'':' on')+'" role="group" aria-label="Slide '+(i+1)+' of '+b.length+'"><div class="bg" style="background-image:url(\''+esc(x.image)+'\')"></div><div class="t"><h2>'+esc(x.title)+'</h2><p>'+esc(x.subtitle)+'</p><div class="pz">'+esc(x.price)+'</div></div>'+(x.cta?'<button class="cta" data-l="'+esc(x.link)+'">'+esc(x.cta)+'</button>':'')+'</div>'}).join('')+
+   (b.length>1?'<button class="nv l" aria-label="Previous offer" data-n="-1"><svg class="i" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><button class="nv r" aria-label="Next offer" data-n="1"><svg class="i" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button><div id="dots">'+b.map(function(x,i){return '<button aria-label="Go to slide '+(i+1)+'" data-i="'+i+'"'+(i?'':' class="on"')+'></button>'}).join('')+'</div>':'');
+  z.onclick=function(e){var t=e.target.closest('button');if(!t)return;var l=t.getAttribute('data-l'),n=t.getAttribute('data-n'),i=t.getAttribute('data-i');if(l!=null)go(l);else{show(n!=null?bi+ +n:+i);pauseAuto()}};
+  var sx=0;z.ontouchstart=function(e){sx=e.touches[0].clientX;pauseAuto()};z.ontouchend=function(e){var d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>40)show(bi+(d<0?1:-1))};
+  z.onmouseenter=function(){clearInterval(bt)};z.onmouseleave=startAuto;startAuto()}
+function show(i){var s=document.querySelectorAll('.sl'),d=document.querySelectorAll('#dots button');bi=(i+s.length)%s.length;
+  [].forEach.call(s,function(e,k){e.classList.toggle('on',k===bi)});[].forEach.call(d,function(e,k){e.classList.toggle('on',k===bi)})}
+function startAuto(){clearInterval(bt);if(bs.length>1&&bs.some(function(x){return x.auto}))bt=setInterval(function(){show(bi+1)},5000)}
+function pauseAuto(){clearInterval(bt);clearTimeout(pauseAuto.h);pauseAuto.h=setTimeout(startAuto,12000)}
+
+/* ---------- menu ---------- */
+function gdots(d){return d.images&&d.images.length>1?'<span class="gd" aria-hidden="true">'+d.images.map(function(x,k){return '<i'+(k?'':' class="on"')+'></i>'}).join('')+'</span>':''}
+function cycle(im){var d=dishes.filter(function(x){return x.id===im.getAttribute('data-d')})[0];if(!d||!d.images||d.images.length<2)return;var i=(+im.getAttribute('data-i')+1)%d.images.length;im.setAttribute('data-i',i);im.style.backgroundImage="url('"+encodeURI(d.images[i]).replace(/'/g,'%27')+"')";[].forEach.call(im.querySelectorAll('.gd i'),function(e,k){e.classList.toggle('on',k===i)})}
+function render(){var q=$('q').value.toLowerCase();
+  var l=dishes.filter(function(d){return (cat==='All'||(cat==='Offers'?d.hasOffer:d.category===cat))&&(d.name+' '+d.desc).toLowerCase().indexOf(q)>=0});
+  $('main').className=view==='list'?'list':'';$('vg').setAttribute('aria-pressed',view==='grid');$('vl').setAttribute('aria-pressed',view==='list');$('vg').className=view==='grid'?'':'g';$('vl').className=view==='list'?'':'g';
+  if(!l.length){$('main').innerHTML='<div class="empty">'+(dishes.length?'No dishes match your search.':'No dishes available right now.')+'</div>';return}
+  $('main').innerHTML='<div class="grid">'+l.map(function(d){var n=!d.available||isClosed(),qv=Q[d.id]||1;
+   return '<article class="card'+(n?' na':'')+'"><div class="im" role="img" aria-label="'+esc(d.name)+'" data-d="'+esc(d.id)+'" data-i="0" style="background-image:url(\''+esc((d.images&&d.images[0])||d.image)+'\')">'+(d.hasOffer&&!n?'<span class="bd">Offer</span>':'')+(n?'<span class="bd na">'+(d.available?'Orders Closed':'Currently Unavailable')+'</span>':'')+gdots(d)+'</div><div class="cb"><h3>'+esc(d.name)+'</h3><p>'+esc(d.desc)+'</p><div class="pr">'+(d.hasOffer?'<s>'+money(d.regular)+'</s>':'')+'<b>'+money(d.price)+'</b></div>'+
+   '<div class="act"><div class="qt"><button aria-label="Decrease quantity of '+esc(d.name)+'" data-a="-1" data-id="'+esc(d.id)+'"'+(n?' disabled':'')+'>−</button><output data-q="'+esc(d.id)+'">'+qv+'</output><button aria-label="Increase quantity of '+esc(d.name)+'" data-a="1" data-id="'+esc(d.id)+'"'+(n?' disabled':'')+'>+</button></div><button class="ob" data-o="'+esc(d.id)+'"'+(n?' disabled':'')+'>'+(n?(d.available?'Kitchen Closed':'Not Available'):'Order Now')+'</button></div></div></article>'}).join('')+'</div>'}
+$('main').onclick=function(e){var im=e.target.closest('.im');if(im&&im.getAttribute('data-d')&&!e.target.closest('button'))return cycle(im);var b=e.target.closest('button');if(!b||b.disabled)return;var id=b.getAttribute('data-id'),a=b.getAttribute('data-a'),o=b.getAttribute('data-o');
+  if(a){Q[id]=Math.max(1,Math.min(maxQ(),(Q[id]||1)+ +a));var out=document.querySelector('[data-q="'+id+'"]');if(out)out.textContent=Q[id]}else if(o)openForm(o)};
+$('q').oninput=render;$('vg').onclick=function(){view='grid';localStorage.setItem('kview',view);render()};$('vl').onclick=function(){view='list';localStorage.setItem('kview',view);render()};
+
+/* ---------- order form ---------- */
+function openForm(id){if(isClosed())return toast('Kitchen is currently closed. Orders are not being accepted.');if(cur&&cur.state!=='done'){toast('You have an order in progress — resuming it.');return resume()}
+  dish=dishes.filter(function(d){return d.id===id})[0];if(!dish||!dish.available)return toast('Currently unavailable');fq=Q[id]||1;$('fTitle').textContent=dish.name;calc();gmsg('');var K=X.gps||{};$('gnote').textContent=(K.require||K.block?'📍 Your location is used only to check whether delivery is available in your area. It is not required to automatically determine your full address.':'')+(K.radius?' 📍 Delivery available within '+K.radius+' KM':'');$('gnote').style.display=$('gnote').textContent?'block':'none';$('fSheet').classList.add('open')}
+function calc(){$('fq').textContent=fq;$('fItem').textContent=dish.name;var sub=dish.regular*fq,dis=(dish.regular-dish.price)*fq,tot=sub-dis,fx=(S['Delivery Mode']!=='MANUAL'&&String(S['Delivery Charge Type']).toUpperCase()==='FIXED')?(+S['Fixed Delivery Charge']||0):null;if(fx!=null)tot+=fx;
+  $('fsum').innerHTML='<div><span>Subtotal</span><span>'+money(sub)+'</span></div><div><span>Discount</span><span>-'+money(dis)+'</span></div><div><span>Delivery</span><span>'+(fx!=null?money(fx):S['Delivery Mode']==='MANUAL'?'Confirmed by kitchen':'Based on distance')+'</span></div><div class="tot"><span>Total</span><span>'+money(tot)+'</span></div>';$('fgo').textContent='Continue to Payment '+money(tot);$('fdelnote').textContent=fx!=null?'A fixed delivery charge is added to your total.':S['Delivery Mode']==='MANUAL'?'Delivery charge is confirmed by the kitchen after checking your address. You will pay after it is confirmed.':'Delivery charge is calculated automatically from your distance and added to the total.'}
+$('fm1').onclick=function(){fq=Math.max(1,fq-1);Q[dish.id]=fq;calc()};$('fp1').onclick=function(){fq=Math.min(maxQ(),fq+1);Q[dish.id]=fq;calc()};
+var gpsBusy=false,reqApproval=false;
+function areaVal(){return $('fas').style.display==='none'?$('far').value.trim():$('fas').value}
+function gmsg(t,retry){$('gmsg').innerHTML=t?'<div class="note" style="margin:8px 0;background:#fde8e8">'+t+(retry?'<br><button id="gretry" style="margin-top:8px">Try Again / Allow Location</button>':'')+'</div>':'';var r=$('gretry');if(r)r.onclick=function(){$('fgo').click()}}
+function getGps(){return new Promise(function(res){if(!navigator.geolocation)return res({err:'unsupported'});navigator.geolocation.getCurrentPosition(function(p){res({lat:p.coords.latitude,lng:p.coords.longitude,acc:p.coords.accuracy})},function(e){res({err:e.code===1?'denied':e.code===3?'timeout':'error'})},{enableHighAccuracy:true,timeout:15000,maximumAge:0})})}
+var PERM='<b>📍 Location Permission Required</b><br>Delivery availability check karne ke liye apni current location allow karein. Location permission ke bina order place nahi kiya ja sakta.';
+function failMsg(r){var K=X.gps||{},c=r.code;
+  if(c==='KITCHEN_CLOSED'){gmsg('<b>🔴 Kitchen Closed</b><br>Sorry, the kitchen has just closed. Your order could not be submitted.');api('getPublicData',[]).then(function(z){if(z.success){X=z.data.extras;applyExtras();render()}})}
+  else if(c==='OUTSIDE_RADIUS'&&r.data){gmsg('<b>❌ Delivery Not Available</b><br>Aapki current location hamare delivery area se '+Math.max(0.1,r.data.distance-r.data.radius).toFixed(1)+' KM bahar hai.<br>Ham sirf '+r.data.radius+' KM ke radius ke andar delivery karte hain.'+(r.data.canRequest?'<br><button id="greq" style="margin-top:8px">Request admin approval</button>':''));var q=$('greq');if(q)q.onclick=function(){reqApproval=true;$('fgo').click()}}
+  else if(c==='GPS_REQUIRED'||c==='GPS_INVALID')gmsg(PERM,true);
+  else if(c==='GPS_INACCURATE')gmsg('<b>📍 Location Accuracy Low</b><br>Aapki current location accurately detect nahi ho rahi. Please GPS/location ON karke open area me dobara try karein.',true);
+  else if(c==='AREA_UNAVAILABLE')gmsg('<b>Delivery unavailable</b><br>Sorry, delivery is currently unavailable in this area.');
+  else toast(r.message)}
+$('fgo').onclick=async function(){
+  if(gpsBusy)return;var v=function(i){return $(i).value.trim()},b=$('fgo'),area=areaVal();
+  if(!v('fn')||!v('fa')||!area)return toast('Please fill name, delivery area and address.');
+  if(v('fm').replace(/\D/g,'').length<10||v('fw').replace(/\D/g,'').length<10)return toast('Please enter valid 10-digit mobile numbers.');
+  gmsg('');gpsBusy=true;b.disabled=true;var fin=function(){gpsBusy=false;b.disabled=false;calc()},K=X.gps||{},gps=null;
+  if(K.require||K.block){b.textContent='📍 Checking your delivery location...';var g=await getGps();
+    if(g.err){fin();return gmsg(PERM,true)}
+    if(g.acc>K.maxAcc){fin();return gmsg('<b>📍 Location Accuracy Low</b><br>Aapki current location accurately detect nahi ho rahi. Please GPS/location ON karke open area me dobara try karein.',true)}
+    gps={lat:g.lat,lng:g.lng,acc:g.acc,permission:'Granted'}}
+  b.textContent='Submitting Order...';var tok='T'+Date.now()+Math.random().toString(36).slice(2,8);
+  var r=await api('createOrder',[{token:tok,dishId:dish.id,qty:fq,name:v('fn'),mobile:v('fm'),whatsapp:v('fw'),city:v('fc'),address:v('fa'),area:area,landmark:v('fl'),note:v('fno'),gps:gps,requestApproval:reqApproval}]);
+  reqApproval=false;fin();if(!r.success)return failMsg(r);
+  if(r.data.distance!==''&&r.data.distance!=null)toast('✓ Delivery available. Distance: '+r.data.distance+' KM');
+  cur=r.data;cur.token=tok;cur.state='qr';cur.ts=Date.now();save();$('fSheet').classList.remove('open');showPay()};
+function checkResume(){try{cur=JSON.parse(localStorage.getItem(KEY))}catch(e){cur=null}
+  if(cur&&(Date.now()-cur.ts>864e5||cur.state==='done'))cur=null;if(!cur)localStorage.removeItem(KEY);$('resume').style.display=cur?'flex':'none'}
+function resume(){if(cur)showPay()}
+
+/* ---------- payment ---------- */
+function upiUrl(amt,tn){return 'upi://pay?pa='+encodeURIComponent(cur.upiId)+'&pn='+encodeURIComponent(cur.upiName)+'&am='+amt+'&cu=INR&tn='+encodeURIComponent(tn)}
+async function showPay(){
+  $('pSheet').classList.add('open');$('pk').textContent=S['Kitchen Name'];
+  var r=await api('getSession',[cur.orderId,cur.token]);
+  if(r.success){if(['Awaiting Payment','Awaiting Delivery Charge','Awaiting Approval'].indexOf(r.data.paymentStatus)<0){localStorage.removeItem(KEY);cur=null;$('resume').style.display='none';closeSheets();return toast('This order was already submitted.')}
+    var st=cur.state,tk=cur.token,ts=cur.ts;cur=r.data;cur.state=st;cur.token=tk;cur.ts=ts;save()}
+  $('pInfo').innerHTML='<p><b>Order #'+esc(cur.orderId)+'</b><br>'+esc(cur.dish)+' × '+esc(cur.qty)+'<br>'+esc(cur.name)+' · '+esc(cur.whatsapp)+'<br><small>'+esc(cur.address)+'</small></p>';
+  $('pSum').innerHTML='<div><span>Subtotal</span><span>'+money(cur.original)+'</span></div><div><span>Discount</span><span>-'+money(cur.discount)+'</span></div><div><span>Delivery</span><span>'+(cur.pending?'To be confirmed':money(cur.delivery))+'</span></div><div class="tot"><span>Total</span><span>'+(cur.pending?'Pending':money(cur.amount))+'</span></div>';
+  $('pFssai').textContent=X.fssai?'FSSAI Lic. No.: '+X.fssai:'';
+  var wait=!!cur.pending,exp=!wait&&cur.expires&&Date.now()>cur.expires;
+  $('wait').style.display=wait?'block':'none';$('waitt').innerHTML=cur.approval?'<b>Waiting for approval</b><br>Aapki location delivery radius se bahar hai. Kitchen ke approval ke baad aapko payment QR milega.':'<b>Delivery charge is being confirmed</b><br>Delivery charge confirm ho raha hai. Your payment QR will appear here once the kitchen confirms it.';$('expired').style.display=exp?'block':'none';$('qrbox').style.display=(wait||exp)?'none':'block';
+  $('proof').style.display=(!wait&&cur.state==='proof')?'block':'none';$('paid').style.display=(!wait&&!exp&&cur.state!=='proof')?'block':'none';
+  $('wref').onclick=showPay;$('alpaid').onclick=function(){cur.state='proof';save();showPay()};
+  $('renew').onclick=async function(){var z=await api('renewSession',[cur.orderId,cur.token]);if(!z.success)return toast(z.message);var st2=cur.state,t2=cur.token,s2=cur.ts;cur=z.data;cur.state=st2==='proof'?'qr':st2;cur.token=t2;cur.ts=s2;save();showPay()};
+  if(wait||exp)return;
+  $('pAmt').textContent='Pay '+money(cur.amount);$('pUpi').textContent=cur.upiId;var url=upiUrl(cur.amount,cur.orderId);
+  $('qr').innerHTML='';new QRCode($('qr'),{text:url,width:200,height:200});$('upiApp').onclick=function(){location.href=url};
+  $('pExp').textContent=cur.expires?'QR valid till '+new Date(cur.expires).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):''}
+$('paid').onclick=function(){cur.state='proof';save();showPay()};
+
+/* Download the WHOLE payment card (logo, order, amount, QR, UPI ID) as one PNG image */
+function loadImg(src){return new Promise(function(res){if(!src)return res(null);var i=new Image();i.crossOrigin='anonymous';i.onload=function(){res(i)};i.onerror=function(){res(null)};i.src=src})}
+function wrapT(x,t,w){var words=String(t).split(' '),l=[],c='';words.forEach(function(k){var n=c?c+' '+k:k;if(x.measureText(n).width>w&&c){l.push(c);c=k}else c=n});if(c)l.push(c);return l.slice(0,2)}
+$('dlc').onclick=async function(){var b=this;b.disabled=true;b.textContent='Preparing…';
+  try{var W=720,H=1100,c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d'),pri=getComputedStyle(document.documentElement).getPropertyValue('--primary').trim()||'#c8321c';
+    var T=function(s,px,py,sz,wt,col,al){x.font=wt+' '+sz+'px Karla,Arial,sans-serif';x.fillStyle=col;x.textAlign=al||'center';x.fillText(s,px,py)};
+    x.fillStyle='#fff';x.fillRect(0,0,W,H);x.fillStyle=pri;x.fillRect(0,0,W,150);
+    var lg=await loadImg(S['Logo URL']),nx=W/2,al='center';
+    if(lg){x.save();x.beginPath();x.arc(85,75,45,0,7);x.clip();x.drawImage(lg,40,30,90,90);x.restore();nx=155;al='left'}
+    T(S['Kitchen Name']||'Kitchen',nx,88,38,'700','#fff',al);
+    T('Order #'+cur.orderId,W/2,205,30,'700','#2a1f1b');T(cur.dish+' × '+cur.qty,W/2,245,26,'400','#2a1f1b');
+    T(cur.name+'  ·  '+cur.whatsapp,W/2,282,22,'400','#6b5f5a');
+    x.font='400 20px Karla,Arial,sans-serif';wrapT(x,cur.address,600).forEach(function(l,i){T(l,W/2,314+i*26,20,'400','#6b5f5a')});
+    T('Amount to Pay',W/2,400,24,'400','#6b5f5a');T('₹'+cur.amount,W/2,470,72,'700',pri);
+    var tmp=document.createElement('div');new QRCode(tmp,{text:upiUrl(cur.amount,cur.orderId),width:380,height:380,correctLevel:QRCode.CorrectLevel.M});
+    var qc=tmp.querySelector('canvas');x.fillStyle='#fff';x.strokeStyle='#eadfd9';x.lineWidth=2;x.fillRect(150,510,420,420);x.strokeRect(150,510,420,420);x.imageSmoothingEnabled=false;x.drawImage(qc,170,530,380,380);
+    T('Scan using any UPI app',W/2,975,26,'700','#2a1f1b');T('UPI ID: '+cur.upiId,W/2,1013,24,'400','#2a1f1b');
+    T('Payment is verified manually. Upload your receipt after paying.',W/2,1065,19,'400','#6b5f5a');if(X.fssai)T('FSSAI Lic. No.: '+X.fssai,W/2,1090,18,'400','#6b5f5a');
+    c.toBlob(function(bl){var a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download=cur.orderId+'-payment-card.png';document.body.appendChild(a);a.click();a.remove();toast('Payment card downloaded')},'image/png')
+  }catch(e){toast('Could not create the card. Please take a screenshot instead.')}
+  b.disabled=false;b.textContent='Download Payment Card'};
+
+function readFile(f){return new Promise(function(res,rej){
+  if(f.type.indexOf('image/')===0){var img=new Image();img.onload=function(){var s=Math.min(1,1400/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=img.width*s;c.height=img.height*s;c.getContext('2d').drawImage(img,0,0,c.width,c.height);res({mime:'image/jpeg',b64:c.toDataURL('image/jpeg',.8).split(',')[1]})};img.onerror=rej;img.src=URL.createObjectURL(f)}
+  else{var r=new FileReader();r.onload=function(){res({mime:f.type,b64:r.result.split(',')[1]})};r.onerror=rej;r.readAsDataURL(f)}})}
+$('sub').onclick=async function(){var f=$('rf').files[0],tx=$('tx').value.trim(),b=$('sub');
+  if(!f&&!tx)return toast('Upload a receipt or enter the transaction ID.');
+  b.disabled=true;b.textContent='Uploading payment proof...';var d={};
+  try{if(f)d=await readFile(f)}catch(e){b.disabled=false;b.textContent='Confirm Payment';return toast('Receipt upload failed. Please try again.')}
+  var r=await api('submitPayment',[{orderId:cur.orderId,token:cur.token,txnId:tx,amount:cur.amount,mime:d.mime,base64:d.b64}]);
+  b.disabled=false;b.textContent='Confirm Payment';if(!r.success){if(r.code==='AMOUNT_CHANGED'){toast(r.message);cur.state='qr';save();return showPay()}return toast(r.message)}
+  var id=r.data.orderId;localStorage.removeItem(KEY);cur=null;$('resume').style.display='none';closeSheets();$('sid').textContent=id;
+  $('strk').onclick=function(){closeSheets();$('to').value=id;setView('trackv');$('tm').focus()};$('sSheet').classList.add('open')};
+
+/* ---------- track ---------- */
+var ST=['Order Received','Payment Verification','Confirmed','Preparing','Out for Delivery','Delivered'];
+$('tgo').onclick=function(){var b=this;$('terr').textContent='';$('tout').innerHTML='';
+  if(!$('to').value.trim()||$('tm').value.replace(/\D/g,'').length<10){$('terr').textContent='Please enter your Order ID and 10-digit mobile number.';return}
+  b.disabled=true;b.textContent='Checking...';
+  api('getOrderStatus',[$('to').value,$('tm').value]).then(function(r){b.disabled=false;b.textContent='Check status';if(!r.success){$('terr').textContent=r.message;return}
+    var d=r.data,i=1,note='';
+    if(d.paymentStatus==='Awaiting Approval')note='Your delivery request is waiting for kitchen approval. We will message you on WhatsApp.';else if(d.paymentStatus==='Declined')note='Sorry, the kitchen could not accept delivery to your location.';else if(d.paymentStatus==='Awaiting Delivery Charge')note='Delivery charge is being confirmed. We will message you on WhatsApp.';else if(d.paymentStatus==='Payment Rejected')note='Your payment could not be verified. Please contact us on WhatsApp.';
+    else if(d.status==='Cancelled')note='This order was cancelled.';
+    else{i={'New Order':d.paymentStatus==='Payment Confirmed'?2:1,'Confirmed':2,'Preparing':3,'Out for Delivery':4,'Delivered':5}[d.status];if(i==null)i=1;if(i===1)note='Payment proof received — verification pending.'}
+    var bal=Math.max(0,d.amount-d.paid),h='<div class="box"><b>'+esc(d.orderId)+'</b> · '+esc(d.dish)+'<br>Total '+money(d.amount)+(d.delivery?' (incl. delivery '+money(d.delivery)+')':'')+(note?'<p class="note">'+esc(note)+'</p>':'')+'<ol class="tl">'+ST.map(function(s,k){return '<li class="'+(k<i?'done':k===i?'now':'')+'">'+s+'</li>'}).join('')+'</ol>'+
+      (d.tracking&&/^https?:\/\//i.test(d.tracking)?'<a href="'+esc(d.tracking)+'" target="_blank" rel="noopener"><button style="width:100%">Track Delivery</button></a>':'<p style="color:var(--muted)">Delivery tracking link will appear here once your order is dispatched.</p>')+'</div>';
+    if(bal>0&&d.paymentStatus!=='Payment Rejected')h+='<div class="box center"><h3>Balance to pay: '+money(bal)+'</h3><p>Delivery charge was added to your order. Pay the balance and send the screenshot on WhatsApp.</p><div id="tqr"></div><br><button onclick="wa(\'Balance payment for order '+esc(d.orderId)+'\')">Send screenshot on WhatsApp</button></div>';
+    $('tout').innerHTML=h;if(bal>0&&d.paymentStatus!=='Payment Rejected'){var u='upi://pay?pa='+encodeURIComponent(d.upiId)+'&pn='+encodeURIComponent(d.upiName)+'&am='+bal+'&cu=INR&tn='+encodeURIComponent(d.orderId+'-BAL');new QRCode($('tqr'),{text:u,width:200,height:200})}})};
+if('serviceWorker' in navigator)navigator.serviceWorker.register('service-worker.js');
+</script></body></html>
