@@ -1,0 +1,2 @@
+{"name":"Kanchan's Khanawal","short_name":"Khanawal","description":"Ghar jaisa swaad, aapke darwaze tak","start_url":"./index.html","scope":"./","display":"standalone","background_color":"#FFF7EC","theme_color":"#C73E0A",
+"icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},{"src":"icon-maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}]}
